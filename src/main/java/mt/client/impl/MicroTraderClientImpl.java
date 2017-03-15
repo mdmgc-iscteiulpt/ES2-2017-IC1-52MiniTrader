@@ -9,8 +9,8 @@ import mt.client.ui.MicroTraderClientUI;
 import mt.comm.ClientComm;
 import mt.comm.impl.ClientCommImpl;
 
-//Alteracao
 
+//Minor Changes
 
 public class MicroTraderClientImpl implements MicroTraderClient {
 	
