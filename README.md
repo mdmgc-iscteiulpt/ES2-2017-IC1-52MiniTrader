@@ -5,3 +5,5 @@ Group 52	Name 						Student number	Email (@iscte-iul.pt)	Turma
 			Beatriz Ribeiro Varagilal	69275			btrrv@iscte.pt			IC2
 			Bruno Simões				68961			blsss@iscte.pt			IC1
 			Duarte Tereso				34317			dstoa@iscte.pt			IC1
+			
+		Video Link:	https://www.youtube.com/watch?v=NMdavZMyiOM&feature=youtu.be
