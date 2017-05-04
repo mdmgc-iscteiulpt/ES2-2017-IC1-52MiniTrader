@@ -47,7 +47,7 @@ import org.w3c.dom.ls.*;
  *
  */
 
-// US BRANCH CODE
+// EUROPE branch code
 public class MicroServer implements MicroTraderServer {
 
 	public static void main(String[] args) {
