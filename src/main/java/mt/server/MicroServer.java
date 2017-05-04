@@ -165,6 +165,10 @@ public class MicroServer implements MicroTraderServer {
 			newElementOrder.setAttribute("Id", String.valueOf(o.getServerOrderID()));
 			//newElementOrder.setAttribute("Type", tipo);
 			//newElementOrder.setAttribute("Stock", o.getStock());
+
+			newElementOrder.setAttribute("Type", tipo);
+			newElementOrder.setAttribute("Stock", o.getStock());
+
 			newElementOrder.setAttribute("Units", String.valueOf(o.getNumberOfUnits()));
 			newElementOrder.setAttribute("Price", String.valueOf(o.getPricePerUnit()));
 
