@@ -47,9 +47,7 @@ import org.w3c.dom.ls.*;
  *
  */
 
-
-// ---------------- US BRANCH CODE --------------------------------------
-
+// US BRANCH CODE
 public class MicroServer implements MicroTraderServer {
 
 	public static void main(String[] args) {
@@ -163,9 +161,9 @@ public class MicroServer implements MicroTraderServer {
 			
 			// Create new element Order with attributes
 			Element newElementOrder = document.createElement("Order");
-			//newElementOrder.setAttribute("Id", String.valueOf(o.getServerOrderID()));
-			//newElementOrder.setAttribute("Type", tipo);
-			//newElementOrder.setAttribute("Stock", o.getStock());
+			newElementOrder.setAttribute("Id", String.valueOf(o.getServerOrderID()));
+			newElementOrder.setAttribute("Type", tipo);
+			newElementOrder.setAttribute("Stock", o.getStock());
 			newElementOrder.setAttribute("Units", String.valueOf(o.getNumberOfUnits()));
 			newElementOrder.setAttribute("Price", String.valueOf(o.getPricePerUnit()));
 
