@@ -83,6 +83,9 @@ public class MicroServer implements MicroTraderServer {
 
 	/** The value is {@value #EMPTY} */
 	public static final int EMPTY = 0;
+	
+	ArrayList<Order> orders;
+	String tipo;
 
 	/**
 	 * Constructor
@@ -91,7 +94,7 @@ public class MicroServer implements MicroTraderServer {
 		LOGGER.log(Level.INFO, "Creating the server...");
 		orderMap = new HashMap<String, Set<Order>>();
 		updatedOrders = new HashSet<>();
-
+		orders = new ArrayList<Order>();
 	}
 
 	@Override
@@ -141,49 +144,46 @@ public class MicroServer implements MicroTraderServer {
 		LOGGER.log(Level.INFO, "Shutting Down Server...");
 	}
 
-	public void writeToXML(Order o, String tipo){
+	public void writeToXML(Order o){
+	
+		orders.add(o);
 
-		System.out.println("NEW ORDER ALERT: " + o.toString() + "Tipo: " + tipo);
-		
 		try {
-			
-			//Build XML 
-			//Root Element: Order
-			//	Main Element: Costumer
-			
-			// Cria o ficheiro xml
-			FileWriter xmlFile = new FileWriter("MicroTraderPersistence.xml");
-			BufferedWriter out = new BufferedWriter(xmlFile);
-			
+
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document document = dBuilder.newDocument();
-			
-			// Create new element Order with attributes
-			Element newElementOrder = document.createElement("Order");
-			newElementOrder.setAttribute("Id", String.valueOf(o.getServerOrderID()));
-			newElementOrder.setAttribute("Type", tipo);
-			newElementOrder.setAttribute("Stock", o.getStock());
-			newElementOrder.setAttribute("Units", String.valueOf(o.getNumberOfUnits()));
-			newElementOrder.setAttribute("Price", String.valueOf(o.getPricePerUnit()));
 
-			// Create new element Customer
-			Element newElementCustomer = document.createElement("Customer");
-			newElementCustomer.setTextContent("Duarte"); 
-			newElementOrder.appendChild(newElementCustomer);
+			// Create a ROOT Element
+			Element root = document.createElement("Orders");
+			document.appendChild(root);
+
+			//Insert all orders in elements 
+			for(Order order: orders){
+				Element newOrder = document.createElement("Order");
+				newOrder.setAttribute("Id", String.valueOf(order.getServerOrderID()));
+				if(order.isBuyOrder()) {
+					tipo = "BUY";
+				}
+				else tipo = "SELL";
+					newOrder.setAttribute("Type", tipo);
+				newOrder.setAttribute("Stock", order.getStock());
+				newOrder.setAttribute("Units", String.valueOf(order.getNumberOfUnits()));
+				newOrder.setAttribute("Price", String.valueOf(order.getPricePerUnit()));
+				root.appendChild(newOrder);
+			}
 
 			// Add new node to XML document root element
 			System.out.println("----- Adding new element to root element -----");
-			//System.out.println("Root element :" + document.getDocumentElement().getTagName() );         
-			System.out.println("Add Order Id='5' Type= "+tipo+" Stock= "+o.getStock()+" Units= "+o.getNumberOfUnits()+" Price= " + o.getPricePerUnit());
-			//Node n = doc.getDocumentElement();
-			document.appendChild(newElementOrder);
-			
+			System.out.println("Add Order Id='5' Type= "+tipo+" Stock= "+o.getStock()+
+					" Units= "+o.getNumberOfUnits()+" Price= " + o.getPricePerUnit());
+
 			// Save XML document
 			System.out.println("Save XML document.");
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			StreamResult result = new StreamResult(new FileOutputStream("MicroTraderPersistence.xml"));
+			StreamResult result = new StreamResult(new FileOutputStream("MicroTraderPersistenceUS.xml"));	
 			DOMSource source = new DOMSource(document);
 			transformer.transform(source, result);
 
@@ -205,59 +205,7 @@ public class MicroServer implements MicroTraderServer {
 		}
 		
 	}
-	public void printXML(File inputFile){
-
-		try{
-			//Enables applications to obtain a parser that produces DOM object trees from XML documents.
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-
-			//Parse the content of the given file as an XML document and return a new DOM Document object
-			Document doc = dBuilder.parse(inputFile);
-
-			//normalize() - Puts all Text nodes in the full depth of the sub-tree underneath this Node, including attribute nodes,"normal" form
-			doc.getDocumentElement().normalize();  
-
-			//Provides the abstraction of an ordered collection of nodes, without defining or constraining how this collection is implemented. 
-			NodeList nList = doc.getElementsByTagName("Order");
-			System.out.println("----- Navigate the tree nodes -----");
-
-			for (int i = 0; i < nList.getLength(); i++) {
-				Node nNode = nList.item(i);
-				System.out.print(nNode.getNodeName() + " ");
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					System.out.print("Id:" + eElement.getAttribute("Id"));
-					System.out.print(" Type:" + eElement.getAttribute("Type"));
-					System.out.print(" Stock:" + eElement.getAttribute("Stock"));
-					System.out.print(" Units:" + eElement.getAttribute("Units"));
-					System.out.print(" Price:" + eElement.getAttribute("Price"));
-					System.out.println();
-
-
-					System.out.println("----- Search the tree with xpath queries -----");  
-
-					// Query 1 
-					XPathFactory xpathFactory = XPathFactory.newInstance();
-					XPath xpath = xpathFactory.newXPath();
-					XPathExpression expr = xpath.compile("/XML/Order[@Id='2']/@*");
-					NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-					System.out.print("Order ");
-
-					for (int j = 0; j < nl.getLength(); j++) {
-						System.out.print(nl.item(j).getNodeName()  + ":");
-						System.out.print(nl.item(j).getFirstChild().getNodeValue()  + " ");
-					}
-					// Query 2
-					expr = xpath.compile("/XML/Order[@Id='2']/Customer");
-					String str = (String) expr.evaluate(doc, XPathConstants.STRING);
-					System.out.println();System.out.println("Customer of Order Id=5: " + str);
-
-				}
-			}
-
-		} catch (Exception e) { e.printStackTrace(); }
-	}
+	
 
 	/**
 	 * Verify if user is already connected
@@ -367,14 +315,14 @@ public class MicroServer implements MicroTraderServer {
 		// if is buy order
 		if (o.isBuyOrder()) {
 			processBuy(msg.getOrder());
-			writeToXML(msg.getOrder(), "BUY");
+			writeToXML(o);
 
 		}
 
 		// if is sell order
 		if (o.isSellOrder()) {
 			processSell(msg.getOrder());
-			writeToXML(msg.getOrder(), "SELL");
+			writeToXML(o);
 		}
 
 
