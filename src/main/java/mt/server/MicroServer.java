@@ -84,6 +84,7 @@ public class MicroServer implements MicroTraderServer {
 	/** The value is {@value #EMPTY} */
 	public static final int EMPTY = 0;
 	ArrayList<Order> orders;
+	String tipo;
 	/**
 	 * Constructor
 	 */
@@ -142,7 +143,7 @@ public class MicroServer implements MicroTraderServer {
 		LOGGER.log(Level.INFO, "Shutting Down Server...");
 	}
 
-	public void writeToXML(Order o, String tipo){
+	public void writeToXML(Order o){
 
 		orders.add(o);
 
@@ -161,7 +162,11 @@ public class MicroServer implements MicroTraderServer {
 				Element newOrder = document.createElement("Order");
 				newOrder.setAttribute("Costumer", order.getNickname());
 				newOrder.setAttribute("Id", String.valueOf(order.getServerOrderID()));
-				newOrder.setAttribute("Type", tipo);
+				if(order.isBuyOrder()) {
+					 				tipo = "BUY";
+					 				}
+					 				else tipo = "SELL";
+					 					newOrder.setAttribute("Type", tipo);
 				newOrder.setAttribute("Stock", order.getStock());
 				newOrder.setAttribute("Units", String.valueOf(order.getNumberOfUnits()));
 				newOrder.setAttribute("Price", String.valueOf(order.getPricePerUnit()));
@@ -309,14 +314,14 @@ public class MicroServer implements MicroTraderServer {
 		// if is buy order
 		if (o.isBuyOrder()) {
 			processBuy(msg.getOrder());
-			writeToXML(msg.getOrder(), "BUY");
+			writeToXML(msg.getOrder());
 
 		}
 
 		// if is sell order
 		if (o.isSellOrder()) {
 			processSell(msg.getOrder());
-			writeToXML(msg.getOrder(), "SELL");
+			writeToXML(msg.getOrder());
 		}
 
 
