@@ -159,7 +159,7 @@ public class MicroServer implements MicroTraderServer {
 			//Insert all orders in elements 
 			for(Order order: orders){
 				Element newOrder = document.createElement("Order");
-		//		newOrder.setAttribute("Costumer", order.getNickname());
+				newOrder.setAttribute("Costumer", order.getNickname());
 				newOrder.setAttribute("Id", String.valueOf(order.getServerOrderID()));
 				newOrder.setAttribute("Type", tipo);
 				newOrder.setAttribute("Stock", order.getStock());
@@ -178,7 +178,7 @@ public class MicroServer implements MicroTraderServer {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			StreamResult result = new StreamResult(new FileOutputStream("MicroTraderPersistenceUS.xml"));	
+			StreamResult result = new StreamResult(new FileOutputStream("MicroTraderPersistenceAS.xml"));	
 			DOMSource source = new DOMSource(document);
 			transformer.transform(source, result);
 
