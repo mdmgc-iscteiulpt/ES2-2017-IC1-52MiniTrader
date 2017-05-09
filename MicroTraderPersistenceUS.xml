@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Orders>
-<Order Id="1" Price="1.0" Stock="galp" Type="BUY" Units="1"/>
-<Order Id="2" Price="1.0" Stock="g" Type="SELL" Units="0"/>
-<Order Id="3" Price="1.0" Stock="g" Type="BUY" Units="0"/>
-<Order Id="4" Price="1.0" Stock="g" Type="SELL" Units="1"/>
-</Orders>
