@@ -21,6 +21,7 @@ import mt.comm.impl.ServerCommImpl;
 import mt.exception.ServerException;
 import mt.filter.AnalyticsFilter;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -310,7 +311,7 @@ public class MicroServer implements MicroTraderServer {
 		LOGGER.log(Level.INFO, "Processing new order...");
 
 		Order o = msg.getOrder();
-
+		
 		// save the order on map
 		saveOrder(o);
 
@@ -337,6 +338,7 @@ public class MicroServer implements MicroTraderServer {
 		// reset the set of changed orders
 		updatedOrders = new HashSet<>();
 
+				
 	}
 
 	/**
