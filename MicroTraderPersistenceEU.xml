@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Orders>
-<Order Costumer="Mar" Id="1" Price="1.0" Stock="a" Type="SELL" Units="1"/>
+<Order Costumer="duarte" Id="1" Price="1.0" Stock="EDP" Type="SELL" Units="10"/>
+<Order Costumer="duarte" Id="2" Price="1.0" Stock="EDP" Type="BUY" Units="10"/>
 </Orders>

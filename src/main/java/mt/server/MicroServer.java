@@ -20,6 +20,7 @@ import mt.comm.impl.ServerCommImpl;
 import mt.exception.ServerException;
 import mt.filter.AnalyticsFilter;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -86,7 +87,7 @@ public class MicroServer implements MicroTraderServer {
 
 	ArrayList<Order> orders;
 	String tipo;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -165,10 +166,10 @@ public class MicroServer implements MicroTraderServer {
 				newOrder.setAttribute("Costumer", order.getNickname());
 				newOrder.setAttribute("Id", String.valueOf(order.getServerOrderID()));
 				if(order.isBuyOrder()) {
-					 				tipo = "BUY";
-					 				}
-					 				else tipo = "SELL";
-					 					newOrder.setAttribute("Type", tipo);
+					tipo = "BUY";
+				}
+				else tipo = "SELL";
+				newOrder.setAttribute("Type", tipo);
 				newOrder.setAttribute("Stock", order.getStock());
 				newOrder.setAttribute("Units", String.valueOf(order.getNumberOfUnits()));
 				newOrder.setAttribute("Price", String.valueOf(order.getPricePerUnit()));
@@ -205,10 +206,10 @@ public class MicroServer implements MicroTraderServer {
 			System.out.println("Catch 5: ");
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
+
 
 	/**
 	 * Verify if user is already connected
@@ -311,12 +312,12 @@ public class MicroServer implements MicroTraderServer {
 		LOGGER.log(Level.INFO, "Processing new order...");
 
 		Order o = msg.getOrder();
-
 		// save the order on map
 		saveOrder(o);
 
 		// if is buy order
 		if (o.isBuyOrder()) {
+
 			processBuy(msg.getOrder());
 			writeToXML(msg.getOrder());
 
@@ -401,6 +402,7 @@ public class MicroServer implements MicroTraderServer {
 	private void doTransaction(Order buyOrder, Order sellerOrder) {
 		LOGGER.log(Level.INFO, "Processing transaction between seller and buyer...");
 
+		if(!buyOrder.getNickname().equals(sellerOrder.getNickname())){
 		if (buyOrder.getNumberOfUnits() >= sellerOrder.getNumberOfUnits()) {
 			buyOrder.setNumberOfUnits(buyOrder.getNumberOfUnits()
 					- sellerOrder.getNumberOfUnits());
@@ -409,10 +411,14 @@ public class MicroServer implements MicroTraderServer {
 			sellerOrder.setNumberOfUnits(sellerOrder.getNumberOfUnits()
 					- buyOrder.getNumberOfUnits());
 			buyOrder.setNumberOfUnits(EMPTY);
+			updatedOrders.add(buyOrder);
+			updatedOrders.add(sellerOrder);
+		}
+		} else{
+			JOptionPane.showMessageDialog(null, "The user can´t buy  ans sell the same Order");
 		}
 
-		updatedOrders.add(buyOrder);
-		updatedOrders.add(sellerOrder);
+	
 
 
 	}
