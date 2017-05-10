@@ -201,8 +201,8 @@ public class PlaceOrderForm extends javax.swing.JDialog {
 		} else {
 			try {
 				pricePerUnit = Double.valueOf(pricePerUnitTxt.getText().trim());
-				if (pricePerUnit <= 0) {
-					message = (message.isEmpty() ? "" : message + "\n") + "Price per unit must be greater than 0.";
+				if (pricePerUnit < 10) {
+					message = (message.isEmpty() ? "" : message + "\n") + "Price per unit must be greater than 10.";
 				} else if (pricePerUnit > Double.MAX_VALUE) {
 					message = (message.isEmpty() ? "" : message + "\n") + "Price per unit must be less than "
 							+ Integer.MAX_VALUE + ".";
