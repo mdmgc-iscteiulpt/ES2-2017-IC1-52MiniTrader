@@ -310,33 +310,34 @@ public class MicroServer implements MicroTraderServer {
 		Order o = msg.getOrder();
 		// save the order on map
 		
-				saveOrder(o);
-		
-
+		if(saveOrder(o)){
+			// notify clients of changed order
+			notifyClientsOfChangedOrders();
+			
+			
 		// if is buy order
 		if (o.isBuyOrder()) {
 
 			processBuy(msg.getOrder());
-			writeToXML(msg.getOrder());
+			
 
 		}
 
 		// if is sell order
 		if (o.isSellOrder()) {
 			processSell(msg.getOrder());
-			writeToXML(msg.getOrder());
+		
 		}
 
 		
-		// notify clients of changed order
-		notifyClientsOfChangedOrders();
+	
 
 		// remove all fulfilled orders
 		removeFulfilledOrders();
 
 		// reset the set of changed orders
 		updatedOrders = new HashSet<>();
-
+		}
 	}
 
 	/**
@@ -345,14 +346,31 @@ public class MicroServer implements MicroTraderServer {
 	 * @param o
 	 * 			the order to be stored on map
 	 */
-	private void saveOrder(Order o) {
+	private boolean saveOrder(Order o) {
 		LOGGER.log(Level.INFO, "Storing the new order...");
-
-		//save order on map
-		Set<Order> orders = orderMap.get(o.getNickname());
-		orders.add(o);		
-	}
-
+		int count=0;
+		Iterator<Order> iterator = orders.iterator();
+		if(o.isSellOrder()){
+			for(count = 0; iterator.hasNext();){
+				Order order = iterator.next();
+					if(order.isSellOrder() && order.getNickname().equals(o.getNickname()) && order.getNumberOfUnits() >0)
+						count++;
+			}
+			if(count>=5){
+				serverComm.sendError(o.getNickname(), "The number of unfulfilled sell orders can't exceed 5");
+				return false;
+			}
+		
+		}
+		
+			Set<Order> orders = orderMap.get(o.getNickname());
+			orders.add(o);	
+			
+				return true;
+			
+		}
+	
+	
 	/**
 	 * Process the sell order
 	 * 
