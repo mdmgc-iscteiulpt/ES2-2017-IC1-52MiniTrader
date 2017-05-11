@@ -30,15 +30,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
+
 
 import java.io.*;
 import org.w3c.dom.*;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-import org.w3c.dom.ls.*;
+
 
 /**
  * MicroTraderServer implementation. This class should be responsible
@@ -313,7 +309,9 @@ public class MicroServer implements MicroTraderServer {
 
 		Order o = msg.getOrder();
 		// save the order on map
-		saveOrder(o);
+		
+				saveOrder(o);
+		
 
 		// if is buy order
 		if (o.isBuyOrder()) {
@@ -329,7 +327,7 @@ public class MicroServer implements MicroTraderServer {
 			writeToXML(msg.getOrder());
 		}
 
-
+		
 		// notify clients of changed order
 		notifyClientsOfChangedOrders();
 
@@ -415,7 +413,7 @@ public class MicroServer implements MicroTraderServer {
 			updatedOrders.add(sellerOrder);
 		}
 		} else{
-			JOptionPane.showMessageDialog(null, "The user can´t buy  ans sell the same Order");
+			JOptionPane.showMessageDialog(null, "The user can´t buy an order that's the same order as the one he selled");
 		}
 
 	

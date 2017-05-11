@@ -33,6 +33,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/adminusrlocal/git/ES2-2017-IC1-52MiniTrader/mockito-all-1.8.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
