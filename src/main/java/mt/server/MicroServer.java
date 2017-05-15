@@ -143,68 +143,6 @@ public class MicroServer implements MicroTraderServer {
 		LOGGER.log(Level.INFO, "Shutting Down Server...");
 	}
 
-	public void writeToXML(Order o){
-
-		orders.add(o);
-
-		try {
-
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document document = dBuilder.newDocument();
-
-			// Create a ROOT Element
-			Element root = document.createElement("Orders");
-			document.appendChild(root);
-
-			//Insert all orders in elements 
-			for(Order order: orders){
-				Element newOrder = document.createElement("Order");
-				newOrder.setAttribute("Costumer", order.getNickname());
-				newOrder.setAttribute("Id", String.valueOf(order.getServerOrderID()));
-				if(order.isBuyOrder()) {
-					 				tipo = "BUY";
-					 				}
-					 				else tipo = "SELL";
-					 					newOrder.setAttribute("Type", tipo);
-				newOrder.setAttribute("Stock", order.getStock());
-				newOrder.setAttribute("Units", String.valueOf(order.getNumberOfUnits()));
-				newOrder.setAttribute("Price", String.valueOf(order.getPricePerUnit()));
-				root.appendChild(newOrder);
-			}
-
-			// Add new node to XML document root element
-			System.out.println("----- Adding new element to root element -----");
-			System.out.println("Add Order Id='5' Type= "+tipo+" Stock= "+o.getStock()+
-					" Units= "+o.getNumberOfUnits()+" Price= " + o.getPricePerUnit());
-
-			// Save XML document
-			System.out.println("Save XML document.");
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			StreamResult result = new StreamResult(new FileOutputStream("MicroTraderPersistenceMaster.xml"));	
-			DOMSource source = new DOMSource(document);
-			transformer.transform(source, result);
-
-		} catch (IOException e) {
-			System.out.println("Catch 1: ");
-			e.printStackTrace();
-		}catch (ParserConfigurationException e) {
-			System.out.println("Catch 2: ");
-			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
-			System.out.println("Catch 3: ");
-			e.printStackTrace();
-		} catch (TransformerFactoryConfigurationError e) {
-			System.out.println("Catch 4: ");
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			System.out.println("Catch 5: ");
-			e.printStackTrace();
-		}
-		
-	}
 
 	/**
 	 * Verify if user is already connected
@@ -314,14 +252,12 @@ public class MicroServer implements MicroTraderServer {
 		// if is buy order
 		if (o.isBuyOrder()) {
 			processBuy(msg.getOrder());
-			writeToXML(msg.getOrder());
 
 		}
 
 		// if is sell order
 		if (o.isSellOrder()) {
 			processSell(msg.getOrder());
-			writeToXML(msg.getOrder());
 		}
 
 
