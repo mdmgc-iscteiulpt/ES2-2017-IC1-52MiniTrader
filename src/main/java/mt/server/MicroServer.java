@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -285,7 +286,7 @@ public class MicroServer implements MicroTraderServer {
 						count++;
 			}
 			if(count>=5){
-				serverComm.sendError(o.getNickname(), "The number maximum of unfulfilled sells was exceed");
+				JOptionPane.showMessageDialog(null, "The number of unfulfiled sells can't be superior to 5");
 				return false;
 			}
 		}
@@ -293,11 +294,11 @@ public class MicroServer implements MicroTraderServer {
 			for (Order o1 : entry.getValue()) {
 				if (o1.getNickname().equals(o.getNickname())){
 					if(o1.isBuyOrder() && o.isSellOrder() && o1.getStock().equals(o.getStock())){
-						serverComm.sendError(o.getNickname(), " Clients are not allowed to issue sell orders for their own buy orders and vice versa");
+						JOptionPane.showMessageDialog(null, " Clients are not allowed to issue sell orders for their own buy orders and vice versa");
 						return false;
 					}
 					if(o1.isSellOrder() && o.isBuyOrder() && o1.getStock().equals(o.getStock())){
-						serverComm.sendError(o.getNickname(), " Clients are not allowed to issue sell orders for their own buy orders and vice versa");
+						JOptionPane.showMessageDialog(null, " Clients are not allowed to issue sell orders for their own buy order and vice versa");
 						return false;
 					}
 					
@@ -315,7 +316,7 @@ public class MicroServer implements MicroTraderServer {
 			} catch (Exception e) {
 			}
 		}
-		serverComm.sendError(o.getNickname(), "The number of units must be superior to 10");
+		JOptionPane.showMessageDialog(null, "The number of units must be superior to 10");
 		return false;
 			
 	}
