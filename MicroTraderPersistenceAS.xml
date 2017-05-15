@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Orders>
-<Order Costumer="a" Id="1" Price="10.0" Stock="a" Type="SELL" Units="10"/>
-<Order Costumer="a" Id="2" Price="10.0" Stock="b" Type="SELL" Units="10"/>
-<Order Costumer="a" Id="3" Price="10.0" Stock="c" Type="SELL" Units="10"/>
+<Order Costumer="M" Id="1" Price="10.0" Stock="aa" Type="SELL" Units="10"/>
+<Order Costumer="M" Id="2" Price="10.0" Stock="a" Type="SELL" Units="10"/>
+<Order Costumer="M" Id="3" Price="10.0" Stock="b" Type="SELL" Units="10"/>
+<Order Costumer="M" Id="4" Price="10.0" Stock="c" Type="SELL" Units="10"/>
+<Order Costumer="M" Id="5" Price="10.0" Stock="d" Type="SELL" Units="10"/>
+<Order Costumer="M" Id="6" Price="10.0" Stock="e" Type="SELL" Units="10"/>
 </Orders>
