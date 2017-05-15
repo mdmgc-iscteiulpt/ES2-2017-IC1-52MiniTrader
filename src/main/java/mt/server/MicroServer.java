@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -285,7 +286,7 @@ public class MicroServer implements MicroTraderServer {
 						count++;
 			}
 			if(count>=5){
-				serverComm.sendError(o.getNickname(), "The number maximum of unfulfilled sells was exceed");
+				JOptionPane.showMessageDialog(null, "The number maximum of unfulfilled sells was exceed");
 				return false;
 			}
 		}
@@ -299,7 +300,7 @@ public class MicroServer implements MicroTraderServer {
 			} catch (Exception e) {
 			}
 		}
-		serverComm.sendError(o.getNickname(), "The number of units must be superior to 10");
+		JOptionPane.showMessageDialog(null, "The number of units must be superior to 10");
 		return false;
 			
 	}
