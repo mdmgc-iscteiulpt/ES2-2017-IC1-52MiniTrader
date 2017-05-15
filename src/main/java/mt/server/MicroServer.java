@@ -270,6 +270,10 @@ public class MicroServer implements MicroTraderServer {
 	 * 
 	 * @param o
 	 * 			the order to be stored on map
+	 * 
+	 * When saving the order: Sellers cannot have more than five sell orders unfulfilled at any time 
+     *                        A single order quantity (buy or sell order) can never be lower than 10 units 
+	 * 
 	 */
 	private boolean saveOrder(Order o) {
 		LOGGER.log(Level.INFO, "Storing the new order...");
@@ -411,6 +415,9 @@ public class MicroServer implements MicroTraderServer {
 	}
 
 	
+	/**
+	 * Record persistently all the transactions in an XML document without sellers/buyers identification
+	 */
 	public void writeToXML(Order o){
 
 		orders.add(o);
