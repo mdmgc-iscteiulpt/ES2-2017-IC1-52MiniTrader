@@ -270,6 +270,9 @@ public class MicroServer implements MicroTraderServer {
 	 * 
 	 * @param o
 	 * 			the order to be stored on map
+	 * 
+	 * Only saves the order if the number of units it's superior to 10
+	 * 
 	 */
 	private boolean saveOrder(Order o) {
 		LOGGER.log(Level.INFO, "Storing the new order...");
@@ -398,6 +401,13 @@ public class MicroServer implements MicroTraderServer {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * Record persistently all the transactions in an XML document including sellers/buyers
+	 * identification.
+	 * 
+	 */
 	public void writeToXML(Order o){
 
 		orders.add(o);
