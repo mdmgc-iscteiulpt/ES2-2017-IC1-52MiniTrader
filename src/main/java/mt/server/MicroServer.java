@@ -289,6 +289,22 @@ public class MicroServer implements MicroTraderServer {
 				return false;
 			}
 		}
+		for (Entry<String, Set<Order>> entry : orderMap.entrySet()) {
+			for (Order o1 : entry.getValue()) {
+				if (o1.getNickname().equals(o.getNickname())){
+					if(o1.isBuyOrder() && o.isSellOrder() && o1.getStock().equals(o.getStock())){
+						serverComm.sendError(o.getNickname(), " Clients are not allowed to issue sell orders for their own buy orders and vice versa");
+						return false;
+					}
+					if(o1.isSellOrder() && o.isBuyOrder() && o1.getStock().equals(o.getStock())){
+						serverComm.sendError(o.getNickname(), " Clients are not allowed to issue sell orders for their own buy orders and vice versa");
+						return false;
+					}
+					
+				}
+			}
+		}
+		
 		if(o.getNumberOfUnits() >=10){
 			//save order on map
 			Set<Order> orders = orderMap.get(o.getNickname());
