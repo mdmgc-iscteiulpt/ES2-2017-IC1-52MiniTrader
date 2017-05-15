@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -284,7 +285,7 @@ public class MicroServer implements MicroTraderServer {
 			} catch (Exception e) {
 			}
 		}
-		serverComm.sendError(o.getNickname(), "The number of units must be superior to 10");
+		JOptionPane.showMessageDialog(null, "The number of units must be superior to 10");
 		return false;
 			
 	}
